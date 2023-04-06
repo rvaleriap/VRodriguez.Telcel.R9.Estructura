@@ -1,0 +1,124 @@
+﻿@model Celeste.R9.Estructura.Negocio.Empleado
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Empleado</h2>
+
+
+        @using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div id="accordion">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-grid gap-3 col-6 mx-auto">
+                            <a class="btn btn-success" data-bs-toggle="collapse" href="#collapseOne">
+                              Agregar Empleado
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="collapse " data-bs-parent="#accordion">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-image"></i></span>
+                                <input type="submit" value="Agregar Empleado" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Nombre)
+
+                    <span class="input-group-text"><i class="bi bi-person-circle"></i> </span>
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.ValidationMessageFor(model => model.Nombre)
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Puesto.PuestoID)
+
+                    <span class="input-group-text"><i class="bi bi-person-circle"></i> </span>
+                    @Html.TextBoxFor(model => model.Puesto.PuestoID, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.ValidationMessageFor(model => model.Puesto.PuestoID)
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Departamento.DepartamentoID)
+
+                    <span class="input-group-text"><i class="bi bi-person-circle"></i> </span>
+                    @Html.TextBoxFor(model => model.Departamento.DepartamentoID, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.ValidationMessageFor(model => model.Departamento.DepartamentoID)
+                </div>
+
+                <br />
+                
+
+            </div>
+
+        }
+<div class="container">
+    <hr />
+    <div class="row">
+        @using (Html.BeginForm("GetAll", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Nombre)
+
+                    <span class="input-group-text"><i class="bi bi-person-circle"></i> </span>
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.ValidationMessageFor(model => model.Nombre)
+                </div>
+
+                <br />
+                <input type="submit" value="Buscar" class="btn btn-info" />
+
+            </div>
+
+        }
+    </div>
+
+    <hr />
+    <div class="row">
+        @if (Model.Empleados != null)
+        {
+            //tabla
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <td class="text-center" style=" font-weight:bold;"> Nombre</td>
+                        <td class="text-center" style=" font-weight:bold;">Puesto</td>
+                        <td class="text-center" style=" font-weight:bold;">Departamento</td>
+                        <td class="text-center" style=" font-weight:bold;">Eliminar</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (Celeste.R9.Estructura.Negocio.Empleado empleado in Model.Empleados)
+                    {
+                        <tr>
+
+                            <td class="hidden">@empleado.EmpleadoID</td>
+                            <td>@empleado.Nombre</td>
+                            <td class="hidden">@empleado.Departamento.DepartamentoID</td>
+                            <td>@empleado.Departamento.Descripcion</td>
+                            <td class="hidden">@empleado.Puesto.PuestoID</td>
+                            <td>@empleado.Puesto.Descripcion</td>
+
+
+                            <td class="text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Empleado", new { EmpleadoID = empleado.EmpleadoID})" onclick="return confirm('¿Desea eliminar el empleado?');"></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">Ocurrio un error al realizar la consulta </div>
+        }
+    </div>
+</div>
+
